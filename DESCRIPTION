@@ -1,0 +1,15 @@
+Package: rcd
+Type: Package
+Title: Robust Copula Dependence
+Version: 1.0.0
+Date: 2016-01-15
+Author: Yi Li, Adam (Aidong) Ding
+Maintainer: Yi Li <liyi.1989@gmail.com>
+Description: Implementation of a dependence measure, the Robust Copula Dependence (RCD).
+License: MIT + file LICENSE
+LinkingTo: Rcpp, RcppParallel
+Imports: Rcpp, RcppParallel
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
+SystemRequirements: GNU make
