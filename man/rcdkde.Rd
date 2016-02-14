@@ -2,9 +2,9 @@
 % Please edit documentation in R/rcdkde.R
 \name{rcdkde}
 \alias{rcdkde}
-\title{Calculate robust copula dependence}
+\title{Calculate robust copula dependence with the KDE estimator}
 \usage{
-rcdkde(x, y, bw, cpp = 1)
+rcdkde(x, y, bw)
 }
 \arguments{
 \item{x}{The sampled data, a vector, for the first random variable}
@@ -12,21 +12,19 @@ rcdkde(x, y, bw, cpp = 1)
 \item{y}{The sampled data, a vector, for the second random variable}
 
 \item{bw}{The bandwidth need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
-
-\item{cpp}{use cpp or not}
 }
 \value{
 The RCD of \code{x} and \code{y}
 }
 \description{
 This is the function that used to calculate the robust copula dependence (RCD)
-between two random variables \code{x} and \code{y}. Note that the length of
+between two random variables \code{x} and \code{y} with the KDE estimator. Note that the length of
 \code{x} and \code{y} should be the same.
 }
 \examples{
 n <- 1000
  x <- runif(n)
- y <- runif(n)
+ y <- x + 0.5 * runif(n)
  rcdkde(x,y)
 }
 

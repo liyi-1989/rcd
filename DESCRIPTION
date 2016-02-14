@@ -8,6 +8,7 @@ Maintainer: Yi Li <liyi.1989@gmail.com>
 Description: Implementation of a dependence measure, the Robust Copula Dependence (RCD).
 License: MIT + file LICENSE
 LinkingTo: Rcpp, RcppParallel
+Depends: R (>= 2.10.0)
 Imports: Rcpp, RcppParallel
 Suggests: knitr,
     rmarkdown
