@@ -10,11 +10,28 @@ vignette: >
 ---
 
 In this vignette, we demonstrate how to use a new R package **rcd** for implementing the robust copula
-dependence (RCD). RCD is a dependence measure which
-is designed for detecting nonlinear relationship among the data. The main function `rcd` in
-the **rcd** is used to estimate the RCD between two random variables.
+dependence (RCD). 
 
-## Code Example
+## 1. The Robust Copula Dependence
+
+RCD is a dependence measure which 
+is designed for detecting nonlinear relationship among the data. Specifically, let $X$ and $Y$ be two random variables, and $U= F_X(X), V= F_Y(Y)$, where $F_X$ and $F_Y$ are the CDFs of $X$ and $Y$. The copula density for the joint random variable $(U, V)$ is denoted by $c(u,v)$. The **copula distance** between $X$ and $Y$ is
+
+\[ CD_{\alpha}=\frac{1}{2}\int\!\!\int_{I^2}|c(u,v)-1|^{\alpha}du dv, \quad \alpha>0. \]
+
+In particular, we call $CD_1$ the **robust copula dependence** and denote it by RCD.
+
+## 2. The Estimation Methods
+
+The main function `rcd` in
+the **rcd** is used to estimate the RCD between two random variables. Two estimation methods are available for the RCD estimation, the kernel density estimation based method (kde),
+and the K-nearest-neighbour based method (knn). 
+
+These two methods could be specified with the `method =` argument of the `rcd` function. Each of the estimation method comes with a tuning parameter. The bandwidth `bw` for `method = "kde"` and `k` for `method = "knn"`. However, they are already set to their default values.
+
+
+
+## 3. Code Example
 
 ```{r,eval=FALSE}
 require(rcd)
