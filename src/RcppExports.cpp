@@ -6,28 +6,30 @@
 using namespace Rcpp;
 
 // ccorecpp
-double ccorecpp(NumericVector u, NumericVector v, NumericVector bw);
-RcppExport SEXP rcd_ccorecpp(SEXP uSEXP, SEXP vSEXP, SEXP bwSEXP) {
+double ccorecpp(NumericVector u, NumericVector v, NumericVector bw, int M);
+RcppExport SEXP rcd_ccorecpp(SEXP uSEXP, SEXP vSEXP, SEXP bwSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericVector >::type u(uSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type bw(bwSEXP);
-    __result = Rcpp::wrap(ccorecpp(u, v, bw));
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    __result = Rcpp::wrap(ccorecpp(u, v, bw, M));
     return __result;
 END_RCPP
 }
 // ccorecppabs
-double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw);
-RcppExport SEXP rcd_ccorecppabs(SEXP uSEXP, SEXP vSEXP, SEXP bwSEXP) {
+double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw, int M);
+RcppExport SEXP rcd_ccorecppabs(SEXP uSEXP, SEXP vSEXP, SEXP bwSEXP, SEXP MSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< NumericVector >::type u(uSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type bw(bwSEXP);
-    __result = Rcpp::wrap(ccorecppabs(u, v, bw));
+    Rcpp::traits::input_parameter< int >::type M(MSEXP);
+    __result = Rcpp::wrap(ccorecppabs(u, v, bw, M));
     return __result;
 END_RCPP
 }

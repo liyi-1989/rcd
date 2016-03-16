@@ -4,7 +4,7 @@
 \alias{rcdknn}
 \title{Calculate robust copula dependence with the KNN estimator}
 \usage{
-rcdknn(x, y, k, typ = 0, cpp = 2)
+rcdknn(x, y, k, cpp = "parallel")
 }
 \arguments{
 \item{x}{The sampled data, a vector, for the first random variable}
@@ -13,9 +13,7 @@ rcdknn(x, y, k, typ = 0, cpp = 2)
 
 \item{k}{The parameter K in KNN that need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
 
-\item{typ}{The ways to calculate the density. "0" means the density is calculated by using the result in the paper Kraskov(2003). "1" means the density is calculated by using the paper Loftsgaarden and Quesenberry (1965).}
-
-\item{cpp}{The ways to calculate the distance matrix. "0" means using R distance function, "1" means using serial version of Rcpp, "2" means using parallel version of Rcpp.}
+\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.}
 }
 \value{
 The RCD of \code{x} and \code{y}
@@ -28,7 +26,7 @@ between two random variables \code{x} and \code{y} with the KNN estimator. Note 
 \examples{
 n <- 1000
  x <- runif(n)
- y <- x + 0.5 * runif(n)
+ y <- x^2 + 2*runif(n)
  rcdknn(x,y)
 }
 

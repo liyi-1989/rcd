@@ -4,7 +4,7 @@
 # typ=0: using the density(i) estimation from the paper(log(c) and then e^log(c))
 # typ=1: using the density(i) estimation directly
 #-----------------------------
-ccorknne=function(x,y,k,typ=0,cpp=2){
+ccorknne=function(x,y,k,cpp="parallel"){
   x=as.matrix(x)
   y=as.matrix(y)
   n=dim(x)[1]
@@ -14,9 +14,9 @@ ccorknne=function(x,y,k,typ=0,cpp=2){
 #   k=cc*n^(4/(dim(x)[2]+dim(y)[2]+6))
 #   k=round(max(1,k))
   
-  if(cpp==1){
+  if(cpp=="serial"){
     D=rcpp_distance(cbind(u,v))
-  }else if(cpp==2){
+  }else if(cpp=="parallel"){
     D=rcpp_parallel_distance(cbind(u,v))
   }else{
     df=data.frame(u,v) #data points in each row
@@ -29,18 +29,20 @@ ccorknne=function(x,y,k,typ=0,cpp=2){
   }
   d=dim(x)[2]+dim(y)[2]#d:dimension of (u,v)/Cd: vol of ball in dim d
   Cd=1#pi/4#(pi^(d/2))/(gamma(1+d/2)*(2^d))
-  if(typ==0){
-    cpl=exp(digamma(k)-digamma(n)-(d)*log(e)-log(Cd)) # copula density by using the paper
-  }else if(typ==1){
-    cpl=k/(n*Cd*e^d) # copula density by calculating directly
-  }
+# typ The ways to calculate the density. "0" means the density is calculated by using the result in the paper Kraskov(2003). "1" means the density is calculated by using the paper Loftsgaarden and Quesenberry (1965).
+  cpl=exp(digamma(k)-digamma(n)-(d)*log(e)-log(Cd)) # copula density by using the paper
+#   if(typ==0){
+#     cpl=exp(digamma(k)-digamma(n)-(d)*log(e)-log(Cd)) # copula density by using the paper
+#   }else if(typ==1){
+#     cpl=k/(n*Cd*e^d) # copula density by calculating directly
+#   }
   intg=1-1/cpl #ccor=0.5*\int |1-1/cpl|*cpl*dudv = AVG|1-1/cpl|/2 = AVG(|intg|)/2
   vp=mean(ifelse(intg>0,intg,0))#mean(max(intg,0)) # ccor = AVG(intg)_+
   return(vp)
 }
 
 #==========================================================================
-minfc_knn=function(n,K,typ=typ,cpp=cpp){
+minfc_knn=function(n,K,cpp=cpp){
   h=0.25*n^(-1/4)
   k=ceiling(2*h*(n+1))
   x=floor(n/k)
@@ -50,7 +52,7 @@ minfc_knn=function(n,K,typ=typ,cpp=cpp){
     yin=cbind(yin,t(i+k*(0:x)))
   }
   yin=yin[yin<=n]
-  r=ccorknne(xin,yin,K,typ=typ,cpp=cpp)
+  r=ccorknne(xin,yin,K,cpp=cpp)
   #plot(xin,yin)
   return(r)
 }
@@ -64,16 +66,15 @@ minfc_knn=function(n,K,typ=typ,cpp=cpp){
 #'  @param x The sampled data, a vector, for the first random variable
 #'  @param y The sampled data, a vector, for the second random variable  
 #'  @param k The parameter K in KNN that need to be used in the density estimation. This parameter could be missing and a deault value will be applied. 
-#'  @param typ The ways to calculate the density. "0" means the density is calculated by using the result in the paper Kraskov(2003). "1" means the density is calculated by using the paper Loftsgaarden and Quesenberry (1965).
-#'  @param cpp The ways to calculate the distance matrix. "0" means using R distance function, "1" means using serial version of Rcpp, "2" means using parallel version of Rcpp.
+#'  @param cpp The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.
 #'  @return The RCD of \code{x} and \code{y}
 #'  @examples
 #'  n <- 1000
 #'  x <- runif(n)
-#'  y <- x + 0.5 * runif(n)
+#'  y <- x^2 + 2*runif(n)
 #'  rcdknn(x,y)
 #'  @export
-rcdknn=function(x,y,k,typ=0,cpp=2){  
+rcdknn=function(x,y,k,cpp="parallel"){  
   x=as.matrix(x)
   y=as.matrix(y)
   n=dim(x)[1]
@@ -81,8 +82,8 @@ rcdknn=function(x,y,k,typ=0,cpp=2){
     k=(1/4)*n^(4/(dim(x)[2]+dim(y)[2]+6))
     k=round(max(1,k))
   }
-  maxc=ccorknne(1:n,1:n,k,typ=typ,cpp=cpp)
-  minc=minfc_knn(n,k,typ=typ,cpp=cpp) 
-  score=(ccorknne(x,y,k,typ=typ,cpp=cpp)-minc)/(maxc-minc)
+  maxc=ccorknne(1:n,1:n,k,cpp=cpp)
+  minc=minfc_knn(n,k,cpp=cpp) 
+  score=(ccorknne(x,y,k,cpp=cpp)-minc)/(maxc-minc)
   return(score)
 }

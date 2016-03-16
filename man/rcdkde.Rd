@@ -4,14 +4,16 @@
 \alias{rcdkde}
 \title{Calculate robust copula dependence with the KDE estimator}
 \usage{
-rcdkde(x, y, bw)
+rcdkde(x, y, bandwidth, M)
 }
 \arguments{
-\item{x}{The sampled data, a vector, for the first random variable}
+\item{x}{The vector for the first random variable}
 
-\item{y}{The sampled data, a vector, for the second random variable}
+\item{y}{The vector for the second random variable}
 
-\item{bw}{The bandwidth need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
+\item{bandwidth}{The bandwidth used in the density estimation. This parameter could be missing and a default value will be applied.}
+
+\item{M}{Number of steps used in numerical integration. This parameter could be missing and a default value will be applied.}
 }
 \value{
 The RCD of \code{x} and \code{y}
@@ -24,7 +26,7 @@ between two random variables \code{x} and \code{y} with the KDE estimator. Note 
 \examples{
 n <- 1000
  x <- runif(n)
- y <- x + 0.5 * runif(n)
+ y <- x^2 + 2*runif(n)
  rcdkde(x,y)
 }
 

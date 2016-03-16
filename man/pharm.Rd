@@ -28,3 +28,5 @@ The stock prices for three pharmaceutical companies and a market index. They are
 data(pharm)
 pairs(pharm[,2:5])
 }
+
+\source{http://finance.yahoo.com/}

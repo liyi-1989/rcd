@@ -4,22 +4,22 @@
 \alias{rcd}
 \title{Calculate robust copula dependence}
 \usage{
-rcd(x, y, method = "knn", k, bw, typ = 0, cpp = 2)
+rcd(x, y, method = "knn", k, bandwidth, M = 200, cpp = "parallel")
 }
 \arguments{
-\item{x}{The sampled data, a vector, for the first random variable}
+\item{x}{The vector for the first random variable}
 
-\item{y}{The sampled data, a vector, for the second random variable}
+\item{y}{The vector for the first random variable}
 
 \item{method}{The method used in density estimation, i.e. knn or kde.}
 
-\item{k}{The parameter K in KNN that need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
+\item{k}{The parameter K in KNN density estimation. This parameter could be missing and a default value will be applied.}
 
-\item{bw}{The bandwidth need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
+\item{bandwidth}{The bandwidth used in the density estimation. This parameter could be missing and a default value will be applied.}
 
-\item{typ}{The ways to calculate the density. "0" means the density is calculated by using the result in the paper Kraskov(2003). "1" means the density is calculated by using the paper Loftsgaarden and Quesenberry (1965).}
+\item{M}{Number of steps used in numerical integration. This parameter could be missing and a default value will be applied.}
 
-\item{cpp}{The ways to calculate the distance matrix. "0" means using R distance function, "1" means using serial version of Rcpp, "2" means using parallel version of Rcpp.}
+\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.}
 }
 \value{
 The RCD of \code{x} and \code{y}
@@ -32,7 +32,7 @@ between two random variables \code{x} and \code{y}. Note that the length of
 \examples{
 n <- 1000
  x <- runif(n)
- y <- x + 0.5 * runif(n)
+ y <- x^2 + 2*runif(n)
  rcd(x,y,method="kde")
 }
 

@@ -1,11 +1,11 @@
 #include <Rcpp.h>
 #include <cmath>
-#define M 200
+// #define M 200
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 
-double ccorecpp(NumericVector u, NumericVector v, NumericVector bw){
+double ccorecpp(NumericVector u, NumericVector v, NumericVector bw, int M){
   // Calculate Ccor using positive part, |1-c|_+
   double n=u.size();
   //double h=0.25*pow(n,-1.0/4.0);
@@ -30,7 +30,7 @@ double ccorecpp(NumericVector u, NumericVector v, NumericVector bw){
     
   for(i=0;i<M;i++){
     for(j=0;j<M;j++){
-      A[i][j]=std::max(1-A[i][j]/(n*h*h*4),0.0);
+      A[i][j]=std::max(A[i][j]/(n*h*h*4)-1,0.0);
       s+=A[i][j];
     }
   }
@@ -41,7 +41,7 @@ double ccorecpp(NumericVector u, NumericVector v, NumericVector bw){
 
 // [[Rcpp::export]]
 
-double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw){
+double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw, int M){
   double n=u.size();
   double h=bw[0];
   //double h=0.25*pow(n,-1.0/4.0);
