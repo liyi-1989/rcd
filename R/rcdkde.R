@@ -22,7 +22,7 @@ minfc.p=function(n,bw,M){
 
 #' Calculate robust copula dependence with the KDE estimator
 #' 
-#' This is the function that used to calculate the robust copula dependence (RCD) 
+#' This is the function used to calculate the robust copula dependence (RCD) 
 #' between two random variables \code{x} and \code{y} with the KDE estimator. Note that the length of 
 #' \code{x} and \code{y} should be the same. 
 #' 
