@@ -2,7 +2,7 @@
 \alias{pharm}
 
 \title{
-Pharmaceutical company stock price 
+Pharmaceutical company stock price .
 }
 
 \description{

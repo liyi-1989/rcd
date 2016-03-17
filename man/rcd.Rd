@@ -19,13 +19,13 @@ rcd(x, y, method = "knn", k, bandwidth, M = 200, cpp = "parallel")
 
 \item{M}{Number of steps used in numerical integration. This parameter could be missing and a default value will be applied.}
 
-\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp. This parameter could be missing and a default value will be applied.}
+\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.}
 }
 \value{
 The RCD of \code{x} and \code{y}
 }
 \description{
-This is the function used to calculate the robust copula dependence (RCD)
+This is the function that used to calculate the robust copula dependence (RCD)
 between two random variables \code{x} and \code{y}. Note that the length of
 \code{x} and \code{y} should be the same.
 }

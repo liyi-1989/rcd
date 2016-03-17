@@ -7,19 +7,19 @@
 rcdknn(x, y, k, cpp = "parallel")
 }
 \arguments{
-\item{x}{The vector for the first random variable}
+\item{x}{The sampled data, a vector, for the first random variable}
 
-\item{y}{The vector for the second random variable}
+\item{y}{The sampled data, a vector, for the second random variable}
 
 \item{k}{The parameter K in KNN that need to be used in the density estimation. This parameter could be missing and a deault value will be applied.}
 
-\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp. This parameter could be missing and a default value will be applied.}
+\item{cpp}{The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.}
 }
 \value{
 The RCD of \code{x} and \code{y}
 }
 \description{
-This is the function used to calculate the robust copula dependence (RCD)
+This is the function that used to calculate the robust copula dependence (RCD)
 between two random variables \code{x} and \code{y} with the KNN estimator. Note that the length of
 \code{x} and \code{y} should be the same.
 }

@@ -59,14 +59,14 @@ minfc_knn=function(n,K,cpp=cpp){
 
 #' Calculate robust copula dependence with the KNN estimator
 #' 
-#' This is the function used to calculate the robust copula dependence (RCD) 
+#' This is the function that used to calculate the robust copula dependence (RCD) 
 #' between two random variables \code{x} and \code{y} with the KNN estimator. Note that the length of 
 #' \code{x} and \code{y} should be the same. 
 #' 
-#'  @param x The vector for the first random variable
-#'  @param y The vector for the second random variable  
+#'  @param x The sampled data, a vector, for the first random variable
+#'  @param y The sampled data, a vector, for the second random variable  
 #'  @param k The parameter K in KNN that need to be used in the density estimation. This parameter could be missing and a deault value will be applied. 
-#'  @param cpp The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp. This parameter could be missing and a default value will be applied.
+#'  @param cpp The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.
 #'  @return The RCD of \code{x} and \code{y}
 #'  @examples
 #'  n <- 1000

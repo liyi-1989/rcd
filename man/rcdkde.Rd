@@ -19,7 +19,7 @@ rcdkde(x, y, bandwidth, M)
 The RCD of \code{x} and \code{y}
 }
 \description{
-This is the function used to calculate the robust copula dependence (RCD)
+This is the function that used to calculate the robust copula dependence (RCD)
 between two random variables \code{x} and \code{y} with the KDE estimator. Note that the length of
 \code{x} and \code{y} should be the same.
 }
