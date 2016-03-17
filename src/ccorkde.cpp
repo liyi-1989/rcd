@@ -10,7 +10,7 @@ double ccorecpp(NumericVector u, NumericVector v, NumericVector bw, int M){
   double n=u.size();
   //double h=0.25*pow(n,-1.0/4.0);
   double h=bw[0];
-  double A[M][M]={0};
+  double A[M][M];
   int i(0),j(0),k(0),ul(0),uu(0),vl(0),vu(0),ir(0),ic(0);  
   double s(0);
   
@@ -45,7 +45,7 @@ double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw, int M){
   double n=u.size();
   double h=bw[0];
   //double h=0.25*pow(n,-1.0/4.0);
-  double A[M][M]={0};
+  double A[M][M];
   int i(0),j(0),k(0),ul(0),uu(0),vl(0),vu(0),ir(0),ic(0);  
   double s(0);
   
