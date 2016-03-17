@@ -40,6 +40,40 @@ ccorknne=function(x,y,k,cpp="parallel"){
   vp=mean(ifelse(intg>0,intg,0))#mean(max(intg,0)) # ccor = AVG(intg)_+
   return(vp)
 }
+#==========================================================================
+
+ccorknne_single=function(x,k,cpp="parallel"){
+  x=as.matrix(x)
+  n=dim(x)[1]
+  u=apply(x,2,rank)/(n+1)
+  
+  if(cpp=="serial"){
+    D=rcpp_distance(u)
+  }else if(cpp=="parallel"){
+    D=rcpp_parallel_distance(u)
+  }else{
+    df=data.frame(u) #data points in each row
+    D=as.matrix(dist(df,method="maximum"))# distance matrix with maximum norm
+  }
+  
+  e=rep(0,n)#e: epsilon(i) = 2*distance to the k nearest neighbour(knn)
+  for(i in 1:n){
+    e[i]=2*sort(D[i,])[k+1] # sort the distance matrix(col&row eighter is OK) and take the knn
+  }
+  d=dim(x)[2] # d:dimension of (u,v)/Cd: vol of ball in dim d
+  Cd=1#pi/4#(pi^(d/2))/(gamma(1+d/2)*(2^d))
+  # typ The ways to calculate the density. "0" means the density is calculated by using the result in the paper Kraskov(2003). "1" means the density is calculated by using the paper Loftsgaarden and Quesenberry (1965).
+  cpl=exp(digamma(k)-digamma(n)-(d)*log(e)-log(Cd)) # copula density by using the paper
+  #   if(typ==0){
+  #     cpl=exp(digamma(k)-digamma(n)-(d)*log(e)-log(Cd)) # copula density by using the paper
+  #   }else if(typ==1){
+  #     cpl=k/(n*Cd*e^d) # copula density by calculating directly
+  #   }
+  intg=1-1/cpl #ccor=0.5*\int |1-1/cpl|*cpl*dudv = AVG|1-1/cpl|/2 = AVG(|intg|)/2
+  vp=mean(ifelse(intg>0,intg,0))#mean(max(intg,0)) # ccor = AVG(intg)_+
+  return(vp)
+}
+
 
 #==========================================================================
 minfc_knn=function(n,K,cpp=cpp){
@@ -85,5 +119,18 @@ rcdknn=function(x,y,k,cpp="parallel"){
   maxc=ccorknne(1:n,1:n,k,cpp=cpp)
   minc=minfc_knn(n,k,cpp=cpp) 
   score=(ccorknne(x,y,k,cpp=cpp)-minc)/(maxc-minc)
+  return(score)
+}
+
+rcdknn_single=function(x,k,cpp="parallel"){  
+  x=as.matrix(x)
+  n=dim(x)[1]
+  if(missing(k)){
+    k=(1/4)*n^(4/(dim(x)[2]+6))
+    k=round(max(1,k))
+  }
+  maxc=ccorknne(1:n,1:n,k,cpp=cpp)
+  minc=minfc_knn(n,k,cpp=cpp) 
+  score=(ccorknne_single(x,k,cpp=cpp)-minc)/(maxc-minc)
   return(score)
 }

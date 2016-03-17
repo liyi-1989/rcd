@@ -19,35 +19,50 @@
 #'  rcd(x,y,method="kde")
 #'  @export
 rcd=function(x,y,method="knn",k,bandwidth,M=200,cpp="parallel"){  
-  x=as.matrix(x)
-  y=as.matrix(y)
   
-  if(dim(x)[1]!=dim(y)[1]){
-    stop("x and y must have the same length!")
-  }
-  
-  if((dim(x)[2]>1 | dim(y)[2]>1) & method=="kde"){
-    method="knn"
-    warning("Multidimensional case, using method = knn.")
-  }
-  
-  if(method=="knn"){
+  if(missing(y)){
+    if(method=="kde"){
+      warning("Single multivariate variable, using knn method.")
+    }
     n=dim(x)[1]
     if(missing(k)){
-      k=(1/4)*n^(4/(dim(x)[2]+dim(y)[2]+6))
+      k=(1/4)*n^(4/(dim(x)[2]+6))
       k=round(max(1,k))
     }
-    score=rcdknn(x,y,k,cpp=cpp)
-    return(score)
-  }else if(method=="kde"){
-    n=length(x)
-    if(missing(bandwidth)){
-      bandwidth=0.25*n^(-1/4)
-    }
-    score=rcdkde(x,y,bandwidth,M=M)
+    score=rcdknn_single(x,k,cpp=cpp)
     return(score)
   }else{
-    stop("method is either kde or knn!")
+    x=as.matrix(x)
+    y=as.matrix(y)
+    
+    if(dim(x)[1]!=dim(y)[1]){
+      stop("x and y must have the same length!")
+    }
+    
+    if((dim(x)[2]>1 | dim(y)[2]>1) & method=="kde"){
+      method="knn"
+      warning("Multidimensional case, using method = knn.")
+    }
+    
+    if(method=="knn"){
+      n=dim(x)[1]
+      if(missing(k)){
+        k=(1/4)*n^(4/(dim(x)[2]+dim(y)[2]+6))
+        k=round(max(1,k))
+      }
+      score=rcdknn(x,y,k,cpp=cpp)
+      return(score)
+    }else if(method=="kde"){
+      n=length(x)
+      if(missing(bandwidth)){
+        bandwidth=0.25*n^(-1/4)
+      }
+      score=rcdkde(x,y,bandwidth,M=M)
+      return(score)
+    }else{
+      stop("method is either kde or knn!")
+    }
   }
-   
+  
+ 
 }
