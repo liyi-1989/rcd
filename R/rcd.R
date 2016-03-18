@@ -30,7 +30,7 @@ rcd=function(x,y,method="knn",k,bandwidth,M=200,cpp="parallel"){
       k=round(max(1,k))
     }
     score=rcdknn_single(x,k,cpp=cpp)
-    return(score)
+    return(ifelse(score>1,1,ifelse(score<0,0,score)))
   }else{
     x=as.matrix(x)
     y=as.matrix(y)
@@ -51,14 +51,14 @@ rcd=function(x,y,method="knn",k,bandwidth,M=200,cpp="parallel"){
         k=round(max(1,k))
       }
       score=rcdknn(x,y,k,cpp=cpp)
-      return(score)
+      return(ifelse(score>1,1,ifelse(score<0,0,score)))
     }else if(method=="kde"){
       n=length(x)
       if(missing(bandwidth)){
         bandwidth=0.25*n^(-1/4)
       }
       score=rcdkde(x,y,bandwidth,M=M)
-      return(score)
+      return(ifelse(score>1,1,ifelse(score<0,0,score)))
     }else{
       stop("method is either kde or knn!")
     }
