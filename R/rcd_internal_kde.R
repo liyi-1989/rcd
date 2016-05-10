@@ -1,7 +1,7 @@
 rcd.internal.kde=function(x,integral="ecdf",bandwidth,cpp=T,S=F){
-
   # 1. if scaled, use scaled version
   if(S){return(rcd.internal.kde.scale(x,integral=integral,bandwidth=bandwidth,cpp=cpp))}
+  print("Using internal kde ...")
   n=nrow(x)
   d=ncol(x)
   X=apply(x,2,rank)/(n+1)
@@ -17,7 +17,7 @@ rcd.internal.kde=function(x,integral="ecdf",bandwidth,cpp=T,S=F){
   }
   
   if(integral=="quad"){ # 2.1 bivariate with quad 
-    if(cpp){ # 2.1.1 bivariate with quad in C++
+    if(cpp!=FALSE){ # 2.1.1 bivariate with quad in C++
       return(ccorecpp(X[,1],X[,2],bandwidth))
     }else{ # 2.1.2 bivariate with quad in R
       # R code for bivariate kde with quad
@@ -40,14 +40,19 @@ rcd.internal.kde=function(x,integral="ecdf",bandwidth,cpp=T,S=F){
   }else if(integral=="ecdf"){ # 2.2 multivariate with ecdf 
     X=as.matrix(X)
     nus=rep(0,n) # nu(f(xi))
-    for(i in 1:n){
-      if(cpp){
-        fxi=kdendcpp(X[i,],X,bandwidth) 
-      }else{
-        fxi=kdend(X[i,],X,bandwidth,"rec") 
-      }
-      nus[i]=ifelse(fxi==0,0,max(1-1/fxi,0)) #nus[i]=nu(fxi)
+    if(cpp!=FALSE){
+      fxi=kdendveccpp(X,bandwidth)
     }
+    nus=max(1-1/fxi,0)
+    # for(i in 1:n){
+    #   #print(i)
+    #   if(cpp!=FALSE){
+    #     fxi=kdendcpp(X[i,],X,bandwidth)
+    #   }else{
+    #     fxi=kdend(X[i,],X,bandwidth,"rec")
+    #   }
+    #   nus[i]=ifelse(fxi==0,0,max(1-1/fxi,0)) #nus[i]=nu(fxi)
+    # }
     return(mean(nus))
   }else{
    stop("The integration method is either ecdf or quad!") 
@@ -55,8 +60,9 @@ rcd.internal.kde=function(x,integral="ecdf",bandwidth,cpp=T,S=F){
 }
 
 
-rcd.internal.kde.scale=function(x,integral="ecdf",bandwidth,cpp=T){
-  n=nrow(x);dx=ncol(x)
+rcd.internal.kde.scale=function(X,integral="ecdf",bandwidth,cpp=T){
+  print("Using scaled internal kde ...")
+  n=nrow(X);dx=ncol(X)
   if(missing(bandwidth)){
     bw=0.25*n^(-1/(2+dx))
   }else{
@@ -69,8 +75,8 @@ rcd.internal.kde.scale=function(x,integral="ecdf",bandwidth,cpp=T){
   }
   
   maxc=rcd.internal.kde(matrix(rep(xin,dx),n,dx),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
-  minc=rcd.internal.kde(cbind(xin,yin),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
-  score=rcd.internal.kde(x,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
+  minc=rcd.internal.kde(as.matrix(cbind(xin,yin[yin<=n])),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
+  score=rcd.internal.kde(X,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
   r=(score-minc)/(maxc-minc)
   return(ifelse(r>0,r,score))
 }

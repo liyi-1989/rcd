@@ -1,3 +1,8 @@
+#' @useDynLib rcd
+#' @importFrom Rcpp sourceCpp
+#' @importFrom RcppParallel RcppParallelLibs
+
+
 #' Calculate robust copula dependence
 #' 
 #' This is the function that used to calculate the robust copula dependence (RCD) 
@@ -25,6 +30,7 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
     stop("X is missing!")
   }else if(missing(y)){
     # Case 2: single variable X (no Y) -> must be internal version
+    x=as.matrix(x)
     if(type=="external") warning("Input is only X, switching to internal version.")
     if(density=="kde"){
       # Case 2.1: internal with kde
@@ -38,7 +44,9 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
     
   }else{
     # Case 3: two variables X and Y -> must be external version
-    if(type=="internal") warning("Input is X and Y, switching to external version.")
+    x=as.matrix(x)
+    y=as.matrix(y)
+    
     if(density=="kde"){
       # Case 3.1: external with kde
       if((ncol(x)==1)&(ncol(y)==1)){
@@ -46,6 +54,7 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
         return(rcd.internal.kde(cbind(x,y),integral=integral,bandwidth=bandwidth,cpp=cpp,S=S))
       }else{
         # Case 3.1.2: external with kde > 2-dim -> true multivariate version
+        if(type=="internal") warning("Input is X and Y, switching to external version.")
         return(rcd.external.kde(x,y,bandwidth=bandwidth,cpp=cpp,S=S))
       }
     }else if(density=="knn"){

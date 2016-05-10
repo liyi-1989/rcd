@@ -1,13 +1,13 @@
 rcd.external.kde=function(x,y,bandwidth,cpp=T,S=F){
   # 1. if scaled, use scaled version
   if(S){return(rcd.external.kde.scale(x,y,bandwidth=bandwidth,cpp=cpp))}
-  
+  print("Using external kde ...")
   if(ncol(x)<ncol(y)){ # if dimension of y is larger, swap x and y.
     tmp=x;x=y;y=tmp;rm(tmp)
   }
   
   n=nrow(x); dx=ncol(x); dy=ncol(y); 
-  U=apply(x,2,rank)/(nx+1); V=apply(y,2,rank)/(ny+1);
+  U=apply(x,2,rank)/(n+1); V=apply(y,2,rank)/(n+1);
 
   nus=rep(0,n) # nu(f(xi))
   cu=cv=cuv=rep(0,n)
@@ -20,7 +20,7 @@ rcd.external.kde=function(x,y,bandwidth,cpp=T,S=F){
       bandwidth=c(hx,hxy)
     }
     
-    if(cpp){
+    if(cpp!=FALSE){
       for(i in 1:n){
         cu[i]=kdendcpp(U[i,],U,bandwidth[1:dx])
         cuv[i]=kdendcpp(cbind(U,V)[i,],cbind(U,V),bandwidth[(dx+1):(dx+dx+dy)])
@@ -43,7 +43,7 @@ rcd.external.kde=function(x,y,bandwidth,cpp=T,S=F){
       bandwidth=c(hx,hy,hxy)
     }
     
-    if(cpp){
+    if(cpp!=FALSE){
       for(i in 1:n){
         cu[i]=kdendcpp(U[i,],U,bandwidth[1:dx])
         cv[i]=kdendcpp(V[i,],V,bandwidth[(dx+1):(dx+dy)])
@@ -63,8 +63,9 @@ rcd.external.kde=function(x,y,bandwidth,cpp=T,S=F){
 }
 
 
-rcd.external.kde.scale=function(x,y,bandwidth,cpp=T){
-  n=nrow(x);dx=ncol(x);dy=ncol(y)
+rcd.external.kde.scale=function(X,y,bandwidth,cpp=T){
+  print("Using scaled external kde ...")
+  n=nrow(X);dx=ncol(X);dy=ncol(y)
   if(missing(bandwidth)){
     bw=0.25*n^(-1/(2+dx))
   }else{
@@ -75,10 +76,10 @@ rcd.external.kde.scale=function(x,y,bandwidth,cpp=T){
   for(i in 1:k){
     yin=cbind(yin,t(i+k*(0:x)))
   }
-  
+
   maxc=rcd.external.kde(matrix(rep(xin,dx),n,dx),matrix(rep(xin,dy),n,dy),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
-  minc=rcd.external.kde(xin,yin,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
-  score=rcd.external.kde(x,y,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
+  minc=rcd.internal.kde(as.matrix(cbind(xin,yin[yin<=n])),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
+  score=rcd.external.kde(X,y,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F)
   r=(score-minc)/(maxc-minc)
   return(ifelse(r>0,r,score))
 }

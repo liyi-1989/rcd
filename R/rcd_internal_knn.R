@@ -1,6 +1,7 @@
 rcd.internal.knn=function(x,k,cpp="parallel",S=F){
   # 1. if scaled, use scaled version
   if(S){return(rcd.internal.knn.scale(x,k=k,cpp=cpp))}
+  print("Using internal knn ...")
   n=nrow(x)
   d=ncol(x)
   X=apply(x,2,rank)/(n+1)
@@ -42,8 +43,9 @@ rcd.internal.knn=function(x,k,cpp="parallel",S=F){
 }
 
 
-rcd.internal.knn.scale=function(x,k,cpp="parallel"){
-  n=nrow(x);dx=ncol(x)
+rcd.internal.knn.scale=function(X,k,cpp="parallel"){
+  print("Using scaled internal knn ...")
+  n=nrow(X);dx=ncol(X)
   bw=0.25*n^(-1/(2+dx))
   kk=ceiling(2*bw*(n+1));x=floor(n/kk);xin=1:n;yin=NULL
   for(i in 1:kk){
@@ -51,8 +53,8 @@ rcd.internal.knn.scale=function(x,k,cpp="parallel"){
   }
   
   maxc=rcd.internal.knn(matrix(rep(xin,dx),n,dx),k,cpp=cpp,S=F)
-  minc=rcd.internal.knn(cbind(xin,yin),k,cpp=cpp,S=F)
-  score=rcd.internal.knn(x,k,cpp=cpp,S=F)
+  minc=rcd.internal.knn(as.matrix(cbind(xin,yin[yin<=n])),k,cpp=cpp,S=F)
+  score=rcd.internal.knn(X,k,cpp=cpp,S=F)
   r=(score-minc)/(maxc-minc)
   return(ifelse(r>0,r,score))
 }

@@ -1,6 +1,6 @@
-library(Rcpp)
-source('kdend.R')
-sourceCpp("kdend.cpp")
+# library(Rcpp)
+# source('kdend.R')
+# sourceCpp("kdend.cpp")
 
 # 1. Application of kdend: T(f), eg. rcd
 # Need to estimate integral of nu(f(x))f(x)dx, and average nu(f(xi))

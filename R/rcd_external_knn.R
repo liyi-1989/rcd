@@ -1,13 +1,13 @@
 rcd.external.knn=function(x,y,k,cpp="parallel",S=F){
   # 1. if scaled, use scaled version
   if(S){return(rcd.external.knn.scale(x,y,k=k,cpp=cpp))}
-  
+  print("Using external knn ...")
   if(ncol(x)<ncol(y)){ # if dimension of y is larger, swap x and y.
     tmp=x;x=y;y=tmp;rm(tmp)
   }
   
   n=nrow(x); dx=ncol(x); dy=ncol(y); 
-  U=apply(x,2,rank)/(nx+1); V=apply(y,2,rank)/(ny+1);
+  U=apply(x,2,rank)/(n+1); V=apply(y,2,rank)/(n+1);
   
   nus=rep(0,n) # nu(f(xi))
   cu=cv=cuv=rep(0,n)
@@ -45,8 +45,9 @@ rcd.external.knn=function(x,y,k,cpp="parallel",S=F){
 }
 
 
-rcd.external.knn.scale=function(x,y,k=k,cpp="parallel"){
-  n=nrow(x);dx=ncol(x);dy=ncol(y)
+rcd.external.knn.scale=function(X,y,k=k,cpp="parallel"){
+  print("Using scaled external knn ...")
+  n=nrow(X);dx=ncol(X);dy=ncol(y)
   bw=0.25*n^(-1/(2+dx))
   kk=ceiling(2*bw*(n+1));x=floor(n/kk);xin=1:n;yin=NULL
   for(i in 1:kk){
@@ -54,8 +55,8 @@ rcd.external.knn.scale=function(x,y,k=k,cpp="parallel"){
   }
   
   maxc=rcd.external.knn(matrix(rep(xin,dx),n,dx), matrix(rep(xin,dy),n,dy),k,cpp=cpp,S=F)
-  minc=rcd.external.knn(xin,yin,k,cpp=cpp,S=F)
-  score=rcd.external.knn(x,y,k,cpp=cpp,S=F)
+  minc=rcd.external.knn(as.matrix(xin),as.matrix(yin[yin<=n]),k,cpp=cpp,S=F)
+  score=rcd.external.knn(X,y,k,cpp=cpp,S=F)
   r=(score-minc)/(maxc-minc)
   return(ifelse(r>0,r,score))
 }

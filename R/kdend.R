@@ -1,3 +1,8 @@
+#' @useDynLib rcd
+#' @importFrom Rcpp sourceCpp
+#' @importFrom RcppParallel RcppParallelLibs
+
+
 # N-dim KDE estimation: used in ecdf+kde
 
 # Kernel function in 1-dim
