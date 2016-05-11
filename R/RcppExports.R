@@ -17,14 +17,6 @@ rcpp_parallel_distance <- function(mat) {
     .Call('rcd_rcpp_parallel_distance', PACKAGE = 'rcd', mat)
 }
 
-Kcpp <- function(u) {
-    .Call('rcd_Kcpp', PACKAGE = 'rcd', u)
-}
-
-PKcpp <- function(x, xi, h) {
-    .Call('rcd_PKcpp', PACKAGE = 'rcd', x, xi, h)
-}
-
 kdendcpp <- function(x, X, h) {
     .Call('rcd_kdendcpp', PACKAGE = 'rcd', x, X, h)
 }

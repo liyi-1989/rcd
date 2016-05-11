@@ -46,6 +46,50 @@ PK=function(x,xi,h,type="normal"){
 # x: need to estimate density at point x, i.e. f(x)
 # X: data matrix
 # h: bandwidth 
+kdend2=function(x,X,h,type="normal"){
+  d=dim(X); n=d[1]; p=d[2] # n: sample size; p: dimension
+  Kx=rep(0,n) 
+  for(i in 1:n){
+    #============ Product Kernel ============
+    Kvec=rep(0,p) # simple kernel in each dimension
+    for(j in 1:p){
+      Kvec[j]=K((X[i,j]-x[j])/h[j],type)/h[j]
+      if(Kvec[j]==0){
+        break
+      }
+    }
+    Kx[i]=prod(Kvec)#PK(x,X[i,],h,type)
+    # ============ End of Product Kernel ============
+  }
+  return(mean(Kx))
+}
+
+kdendvec=function(X,h,type="rec"){
+  d=dim(X); n=d[1]; p=d[2] # n: sample size; p: dimension
+  cn=rep(0,n)
+  for(irow in 1:n){
+    Kx=rep(0,n)
+    for(i in 1:n){
+      #============ Product Kernel ============
+      Kvec=rep(0,p) # simple kernel in each dimension
+      for(j in 1:p){
+        Kvec[j]=K((X[i,j]-X[irow,j])/h[j],type)/h[j]
+        if(Kvec[j]==0){
+          break
+        }
+      }
+      Kx[i]=prod(Kvec)#PK(x,X[i,],h,type)
+      # ============ End of Product Kernel ============
+    }
+    cn[irow]=mean(Kx)
+  }
+  return(cn)
+}
+
+# N-dim KDE
+# x: need to estimate density at point x, i.e. f(x)
+# X: data matrix
+# h: bandwidth 
 kdend=function(x,X,h,type="normal"){
   d=dim(X); n=d[1]; p=d[2] # n: sample size; p: dimension
   Kx=rep(0,n) 

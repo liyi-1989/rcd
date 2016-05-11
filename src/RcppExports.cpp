@@ -53,30 +53,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// Kcpp
-double Kcpp(double u);
-RcppExport SEXP rcd_Kcpp(SEXP uSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< double >::type u(uSEXP);
-    __result = Rcpp::wrap(Kcpp(u));
-    return __result;
-END_RCPP
-}
-// PKcpp
-double PKcpp(NumericVector x, NumericVector xi, NumericVector h);
-RcppExport SEXP rcd_PKcpp(SEXP xSEXP, SEXP xiSEXP, SEXP hSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type x(xSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type xi(xiSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type h(hSEXP);
-    __result = Rcpp::wrap(PKcpp(x, xi, h));
-    return __result;
-END_RCPP
-}
 // kdendcpp
 double kdendcpp(NumericVector x, NumericMatrix X, NumericVector h);
 RcppExport SEXP rcd_kdendcpp(SEXP xSEXP, SEXP XSEXP, SEXP hSEXP) {
