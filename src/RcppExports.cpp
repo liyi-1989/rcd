@@ -18,19 +18,6 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// ccorecppabs
-double ccorecppabs(NumericVector u, NumericVector v, NumericVector bw);
-RcppExport SEXP rcd_ccorecppabs(SEXP uSEXP, SEXP vSEXP, SEXP bwSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< NumericVector >::type u(uSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type v(vSEXP);
-    Rcpp::traits::input_parameter< NumericVector >::type bw(bwSEXP);
-    __result = Rcpp::wrap(ccorecppabs(u, v, bw));
-    return __result;
-END_RCPP
-}
 // rcpp_distance
 NumericMatrix rcpp_distance(NumericMatrix mat);
 RcppExport SEXP rcd_rcpp_distance(SEXP matSEXP) {

@@ -5,10 +5,6 @@ ccorecpp <- function(u, v, bw) {
     .Call('rcd_ccorecpp', PACKAGE = 'rcd', u, v, bw)
 }
 
-ccorecppabs <- function(u, v, bw) {
-    .Call('rcd_ccorecppabs', PACKAGE = 'rcd', u, v, bw)
-}
-
 rcpp_distance <- function(mat) {
     .Call('rcd_rcpp_distance', PACKAGE = 'rcd', mat)
 }

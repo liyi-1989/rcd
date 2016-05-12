@@ -1,13 +1,13 @@
-rcd.internal.knn=function(x,k,cpp="parallel",S=F){
+rcd.internal.knn=function(x,k,cpp="parallel",S=F,verbose=F){
   # 1. if scaled, use scaled version
   if(S){return(rcd.internal.knn.scale(x,k=k,cpp=cpp))}
-  print("Using internal knn ...")
+  if(verbose){print("Using internal knn ...")}
   n=nrow(x)
   d=ncol(x)
   X=apply(x,2,rank)/(n+1)
   if(d==1){stop("X is only one dimensional!")}
   if(missing(k)){
-    k=0.25*n^(4/(d+6))
+    k=0.25*n^(2/(2+d))
     k=round(max(1,k))
   }
   
@@ -25,7 +25,7 @@ rcd.internal.knn=function(x,k,cpp="parallel",S=F){
   #   e[i]=2*sort(D[i,])[k+1] # sort the distance matrix(col&row eighter is OK) and take the knn
   # }
   
-  e=2*apply(D,1,sort)[,k+1]
+  e=2*apply(D,1,sort)[k+1,]
   
   #d=dim(x)[2] # d:dimension of (u,v)/Cd: vol of ball in dim d
   Cd=1#pi/4#(pi^(d/2))/(gamma(1+d/2)*(2^d))
@@ -43,8 +43,9 @@ rcd.internal.knn=function(x,k,cpp="parallel",S=F){
 }
 
 
-rcd.internal.knn.scale=function(X,k,cpp="parallel"){
-  print("Using scaled internal knn ...")
+rcd.internal.knn.scale=function(X,k,cpp="parallel",verbose=F){
+  if(verbose){print("Using scaled internal knn ...")}
+
   n=nrow(X);dx=ncol(X)
   bw=0.25*n^(-1/(2+dx))
   kk=ceiling(2*bw*(n+1));x=floor(n/kk);xin=1:n;yin=NULL
@@ -52,11 +53,11 @@ rcd.internal.knn.scale=function(X,k,cpp="parallel"){
     yin=cbind(yin,t(i+kk*(0:x)))
   }
   
-  maxc=rcd.internal.knn(matrix(rep(xin,dx),n,dx),k,cpp=cpp,S=F)
-  minc=rcd.internal.knn(as.matrix(cbind(xin,yin[yin<=n])),k,cpp=cpp,S=F)
-  score=rcd.internal.knn(X,k,cpp=cpp,S=F)
+  maxc=rcd.internal.knn(matrix(rep(xin,dx),n,dx),k,cpp=cpp,S=F,verbose=F)
+  minc=rcd.internal.knn(as.matrix(cbind(xin,yin[yin<=n])),k,cpp=cpp,S=F,verbose=F)
+  score=rcd.internal.knn(X,k,cpp=cpp,S=F,verbose=F)
   r=(score-minc)/(maxc-minc)
-  return(ifelse(r>0,r,score))
+  return(min(max(r,0),1))
 }
 
 

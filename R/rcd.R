@@ -33,11 +33,11 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
     x=as.matrix(x)
     if(type=="external") warning("Input is only X, switching to internal version.")
     if(density=="kde"){
-      # Case 2.1: internal with kde                     #########CALC HERE#########
+      # Case 2.1: internal with kde                     #########CALC HERE#########$
       return(rcd.internal.kde(x,integral=integral,bandwidth=bandwidth,cpp=cpp,S=S,verbose=verbose))
     }else if(density=="knn"){
       # Case 2.2: internal with knn                     #########CALC HERE#########
-      return(rcd.internal.knn(x,k=k,cpp=cpp,S=S))
+      return(rcd.internal.knn(x,k=k,cpp=cpp,S=S,verbose=verbose))
     }else{
       stop("Density must be kde or knn!")
     }
@@ -49,17 +49,17 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
     
     if(density=="kde"){
       # Case 3.1: external with kde
-      if((ncol(x)==1)&(ncol(y)==1)){                    #########CALC HERE#########
+      if((ncol(x)==1)&(ncol(y)==1)){                    #########CALC HERE#########$
         # Case 3.1.1: external with kde but 2-dim -> using(coincide with) internal version
         return(rcd.internal.kde(cbind(x,y),integral=integral,bandwidth=bandwidth,cpp=cpp,S=S,verbose=verbose))
-      }else{                                            #########CALC HERE#########
+      }else{                                            #########CALC HERE#########$
         # Case 3.1.2: external with kde > 2-dim -> true multivariate version
-        if(type=="internal") warning("Input is X and Y, switching to external version.")
-        return(rcd.external.kde(x,y,bandwidth=bandwidth,cpp=cpp,S=S))
+        #if(type=="internal") warning("Input is X and Y, switching to external version.")
+        return(rcd.external.kde(x,y,bandwidth=bandwidth,cpp=cpp,S=S,verbose=verbose))
       }
     }else if(density=="knn"){
       # Case 3.2: external with knn                     #########CALC HERE#########
-      return(rcd.external.knn(x,y,k=k,cpp=cpp,S=S))
+      return(rcd.external.knn(x,y,k=k,cpp=cpp,S=S,verbose=verbose))
     }else{
       stop("Density must be kde or knn!")
     }

@@ -59,7 +59,7 @@ rcd.internal.kde.scale=function(X,integral="ecdf",bandwidth,cpp=T,verbose=F){
   if(missing(bandwidth)){
     bw=0.25*n^(-1/(2+dx))
   }else{
-    bw=bandwidth[1]  
+    bw=bandwidth[1]
   }
   
   k=ceiling(2*bw*(n+1));x=floor(n/k);xin=1:n;yin=NULL
@@ -71,7 +71,7 @@ rcd.internal.kde.scale=function(X,integral="ecdf",bandwidth,cpp=T,verbose=F){
   minc=rcd.internal.kde(as.matrix(cbind(xin,yin[yin<=n])),integral=integral,bandwidth=bandwidth,cpp=cpp,S=F,verbose=F)
   score=rcd.internal.kde(X,integral=integral,bandwidth=bandwidth,cpp=cpp,S=F,verbose=F)
   r=(score-minc)/(maxc-minc)
-  return(max(r,0))#return(ifelse(r>0,r,0))
+  return(min(max(r,0),1))#return(ifelse(r>0,r,0))
 }
 
 
