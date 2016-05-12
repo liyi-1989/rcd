@@ -45,13 +45,13 @@ rcd.external.kde=function(x,y,bandwidth,cpp=T,S=F,verbose=F){
   }else{ # Case 2: dim(x)>dim(y)>1, general case
     
     if(missing(bandwidth)){
-      # hx=rep(0.25*n^(-1/(2+dx)),dx)
-      # hy=rep(0.25*n^(-1/(2+dy)),dy)
-      # hxy=rep(0.25*n^(-1/(2+dx+dy)),dx+dy)
+      hx=rep(0.25*n^(-1/(2+dx)),dx)
+      hy=rep(0.25*n^(-1/(2+dy)),dy)
+      hxy=rep(0.25*n^(-1/(2+dx+dy)),dx+dy)
       
-      hx=rep(0.25*n^(-1/(2+2)),dx)
-      hy=rep(0.25*n^(-1/(2+2)),dy)
-      hxy=rep(0.25*n^(-1/(2+2)),dx+dy)
+      # hx=rep(0.25*n^(-1/(2+2)),dx)
+      # hy=rep(0.25*n^(-1/(2+2)),dy)
+      # hxy=rep(0.25*n^(-1/(2+2)),dx+dy)
       bandwidth=c(hx,hy,hxy)
     }
     

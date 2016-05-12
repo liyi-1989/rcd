@@ -66,8 +66,23 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
   }
 }
 
-# 
-# 
+
+crcd=function(x,y,z,density="kde",k,bandwidth,cpp="parallel",verbose=F){
+  x=as.matrix(x)
+  y=as.matrix(y)
+  z=as.matrix(z)
+  if(density=="kde"){
+    return(crcd.kde(x,y,z,bandwidth,cpp=cpp,verbose=verbose))
+  }else if(density=="knn"){
+    return(crcd.knn(x,y,z,k,cpp=cpp,verbose=verbose))
+  }else{
+    stop("Density must be kde or knn!")
+  }
+}
+
+
+
+
 # rcd_ori=function(x,y,method="knn",k,bandwidth,M=200,cpp="parallel"){  
 #   
 #   if(missing(y)){
