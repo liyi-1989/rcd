@@ -1,3 +1,7 @@
+#' @useDynLib rcd
+#' @importFrom Rcpp sourceCpp
+#' @importFrom RcppParallel RcppParallelLibs
+#' 
 crcd.knn=function(x,y,z,k,cpp="parallel",verbose=F){
   if(verbose){print("Using knn for conditional rcd...")}
   n=nrow(x); dx=ncol(x); dy=ncol(y); dz=ncol(z);

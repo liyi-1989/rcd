@@ -27,7 +27,7 @@ The main function `rcd` in
 the **rcd** is used to estimate the RCD between two random variables. Two estimation methods are available for the RCD estimation, the kernel density estimation based method (kde),
 and the K-nearest-neighbour based method (knn). 
 
-These two methods could be specified with the `method =` argument of the `rcd` function. Each of the estimation method comes with a tuning parameter. The bandwidth `bandwidth` for `method = "kde"` and `k` for `method = "knn"`. However, they are already set to their default values.
+These two methods could be specified with the `density =` argument of the `rcd` function. Each of the estimation method comes with a tuning parameter. The bandwidth `bandwidth` for `method = "kde"` and `k` for `density = "knn"`. However, they are already set to their default values.
 
 
 
@@ -38,7 +38,7 @@ require(rcd)
 n <- 1000
 x <- runif(n)
 y <-  x^2 + 2*runif(n)
-res.kde <- rcd(x, y, method = "kde")
+res.kde <- rcd(x, y)
 ```
 
 

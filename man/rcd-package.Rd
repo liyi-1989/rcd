@@ -29,5 +29,5 @@ Yale Chang, Yi Li, Adam Ding, Jennifer Dy, A Robust-Equitable Copula Dependence 
   n <- 1000
   x <- runif(n)
   y <- runif(n)
-  rcdkde(x,y)
+  rcd(x,y)
 }

@@ -38,7 +38,7 @@ double kdendcpp(NumericVector x, NumericMatrix X, NumericVector h){
 }
 
 
-// // [[Rcpp::export]]
+
 // double kdendcpp2(NumericVector x, NumericMatrix X, NumericVector h){
 //   int n=X.nrow(),p=X.ncol(); // sample size & dimension
 //   double Kx=0,Kvec = 1.0;
@@ -60,7 +60,7 @@ double kdendcpp(NumericVector x, NumericMatrix X, NumericVector h){
 //   return Kx/n;
 // }
 // 
-// // [[Rcpp::export]]
+
 // NumericVector kdendveccpp2(NumericMatrix X, NumericVector h){
 //   int n=X.nrow(); // sample size
 //   NumericVector cn=X(_,1);

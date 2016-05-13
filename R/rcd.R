@@ -1,8 +1,3 @@
-#' @useDynLib rcd
-#' @importFrom Rcpp sourceCpp
-#' @importFrom RcppParallel RcppParallelLibs
-
-
 #' Calculate robust copula dependence
 #' 
 #' This is the function that used to calculate the robust copula dependence (RCD) 
@@ -10,18 +5,21 @@
 #' \code{x} and \code{y} should be the same. 
 #' 
 #'  @param x The vector for the first random variable
-#'  @param y The vector for the first random variable 
-#'  @param method The method used in density estimation, i.e. knn or kde.
-#'  @param bandwidth The bandwidth used in the density estimation. This parameter could be missing and a default value will be applied. 
-#'  @param M Number of steps used in numerical integration. This parameter could be missing and a default value will be applied. 
+#'  @param y The vector for the second random variable 
+#'  @param type Type of the multivariate dependence measure. "internal" for a single random variable, and "external" for two random variable. This parameter could be missing and a default value will be applied. 
+#'  @param integral The integration method. "ecdf" for Monte-Carlo type average for empirical CDF. "quad" for numerical integration (only for bivariate case). This parameter could be missing and a default value will be applied. 
+#'  @param density The method used in density estimation, i.e. knn or kde. This parameter could be missing and a default value will be applied. 
 #'  @param k The parameter K in KNN density estimation. This parameter could be missing and a default value will be applied. 
-#'  @param cpp The ways to calculate the distance matrix. "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp.
+#'  @param bandwidth The bandwidth used in the density estimation. This parameter could be missing and a default value will be applied. 
+#'  @param cpp The ways to calculate the distance matrix. For KDE, cpp=FALSE means using pure R implementation, otherwise, using c++.For KNN, "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp. This parameter could be missing and a default value will be applied.
+#'  @param S Small sample scale or not. Defualt is False. 
+#'  @param verbose Print the current case or not. Default is False.
 #'  @return The RCD of \code{x} and \code{y}
 #'  @examples
 #'  n <- 1000
 #'  x <- runif(n)
 #'  y <- x^2 + 2*runif(n)
-#'  rcd(x,y,method="kde")
+#'  rcd(x,y)
 #'  @export
 
 rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="parallel",S=F,verbose=F){
@@ -66,7 +64,28 @@ rcd=function(x,y,type="internal",integral="ecdf",density="kde",k,bandwidth,cpp="
   }
 }
 
-
+#' Calculate conditional robust copula dependence
+#' 
+#' This is the function that used to calculate the conditional robust copula dependence (RCD) 
+#' between two random variables \code{x} and \code{y} given \code{z}. Note that the length of 
+#' \code{x} \code{y} and \code{z} should be the same. 
+#' 
+#'  @param x The vector for the first random variable
+#'  @param y The vector for the second random variable 
+#'  @param z The vector for the third random variable that conditioned on
+#'  @param density The method used in density estimation, i.e. knn or kde. This parameter could be missing and a default value will be applied. 
+#'  @param k The parameter K in KNN density estimation. This parameter could be missing and a default value will be applied. 
+#'  @param bandwidth The bandwidth used in the density estimation. This parameter could be missing and a default value will be applied. 
+#'  @param cpp The ways to calculate the distance matrix. For KDE, cpp=FALSE means using pure R implementation, otherwise, using c++.For KNN, "none" means using R distance function, "serial" means using serial version of Rcpp, "parallel" means using parallel version of Rcpp. This parameter could be missing and a default value will be applied.
+#'  @param verbose Print the current case or not. Default is False.
+#'  @return The RCD of \code{x} and \code{y} given \code{z}
+#'  @examples
+#'  n <- 1000
+#'  x <- runif(n)
+#'  y <- runif(n)
+#'  rcd(x,x,y)
+#'  @export
+#'  
 crcd=function(x,y,z,density="kde",k,bandwidth,cpp="parallel",verbose=F){
   x=as.matrix(x)
   y=as.matrix(y)

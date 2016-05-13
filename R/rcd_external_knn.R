@@ -1,3 +1,9 @@
+#' @useDynLib rcd
+#' @importFrom Rcpp sourceCpp
+#' @importFrom RcppParallel RcppParallelLibs
+
+
+
 rcd.external.knn=function(x,y,k,cpp="parallel",S=F,verbose=F){
   # 1. if scaled, use scaled version
   if(S){return(rcd.external.knn.scale(x,y,k=k,cpp=cpp))}
