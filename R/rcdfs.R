@@ -12,7 +12,7 @@ graph=function(fit,type="dot"){
   Max=apply(fit$value,1,which.max)[1:p]
   
   X[,"na"]=X[,2]==paste0("X",rep(Max,time=p+1))
-  
+  names(X)=c("Var1","Var2","value","na")
   p1 = ggplot(data=X, aes(x=Var2, y=Var1, fill=value)) +
     geom_raster() +
     scale_fill_gradient2(low="blue", high="yellow", na.value="black", name="") +

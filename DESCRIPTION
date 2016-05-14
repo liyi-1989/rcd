@@ -9,7 +9,7 @@ Description: Implementation of a dependence measure, the Robust Copula Dependenc
 License: MIT + file LICENSE
 LinkingTo: Rcpp, RcppParallel
 Depends: R (>= 2.10.0)
-Imports: Rcpp, RcppParallel
+Imports: Rcpp, RcppParallel, reshape2, ggplot2
 Suggests: knitr,
     rmarkdown
 VignetteBuilder: knitr
